@@ -5,6 +5,7 @@ import { BiBed, BiBath } from "react-icons/bi";
 import { IoSquareOutline } from "react-icons/io5";
 
 const Results = () => {
+
   return (
     <div className="shadow-lg mt-10 p-5">
       {/* Headers*/}

@@ -1,14 +1,12 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { changeTypeOfHome, changeCondition, changeBedrooms/* changeRangePrice */, changeBathrooms, changePublicationDate, changeEquipament, changeMoreFilters } from "../../redux/filters/actions";
+import { useDispatch, useSelector } from "react-redux";
+import { changeTypeOfHome, changeCondition, changeBedrooms, changeRangePrice, changeBathrooms, changePublicationDate, changeEquipament, changeMoreFilters } from "../../redux/filters/actions";
 
 const Filters = () => {
+  const state = useSelector((state) => state.filter);
   const dispatch = useDispatch();
-  const [flat_apartament, setFlatApartament] = useState(false);
-  const handleClick = () => {
-    console.log(flat_apartament);
-    setFlatApartament(!flat_apartament);
-  };
+  const [min_price, setMinPrice] = useState();
+  const [max_price, setMaxPrice] = useState();
 
   return (
     <div className="flex mt-10 shadow-xl pt-2 pb-10">
@@ -19,67 +17,62 @@ const Filters = () => {
             <div className="flex flex-row">
               <div className="flex flex-col w-2/4">
                 <div className="form-check">
-                  <input
-                    id="flat_apartament"
-                    type="checkbox"
-                    checked={flat_apartament}
-                    name="flat_apartament"
-                    value="flat_apartament"
-                    className="form-check-input"
-                    onChange={(e) => {
-                      e.preventDefault();
-                      handleClick();
-                      dispatch(changeTypeOfHome(e.target.value));
-                    }}
-                  />
-                  <label htmlFor="flat_apartament" className="pl-1">
+                  <label htmlFor="flat_apartament" className="inline-flex items-center indent-1">
+                    <input
+                      id="flat_apartament"
+                      type="checkbox"
+                      checked={state.type_of_home.includes("flat/apartament")}
+                      value="flat/apartament"
+                      name="flat_apartament"
+                      className="accent-green-500 h-5 w-5"
+                      onChange={(e) => dispatch(changeTypeOfHome(e.target.value))}
+                    />
                     Flat/Apartament
                   </label>
                 </div>
                 <div className="form-check">
-                  <input
-                    id="house"
-                    type="checkbox"
-                    name="house"
-                    value="house"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      dispatch(changeTypeOfHome(e.target.value));
-                    }}
-                  />
-                  <label htmlFor="house" className="p-1">
+                  <label htmlFor="house" className="inline-flex items-center indent-1">
+                    <input
+                      id="house"
+                      className="accent-green-500 h-5 w-5 "
+                      type="checkbox"
+                      name="house"
+                      value="house"
+                      checked={state.type_of_home.includes("house")}
+                      onChange={(e) => dispatch(changeTypeOfHome(e.target.value))}
+                    />
                     House
                   </label>
                 </div>
               </div>
               <div className="w-2/4">
                 <div className="form-check">
-                  <input
-                    id="duplex"
-                    type="checkbox"
-                    name="duplex"
-                    value="duplex"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      dispatch(changeTypeOfHome(e.target.value));
-                    }}
-                  />
-                  <label htmlFor="duplex" className="pl-1">
+                  <label htmlFor="duplex" className="inline-flex items-center indent-1">
+                    {" "}
+                    <input
+                      id="duplex"
+                      type="checkbox"
+                      className="accent-green-500 h-5 w-5"
+                      name="duplex"
+                      value="duplex"
+                      checked={state.type_of_home.includes("duplex")}
+                      onChange={(e) => dispatch(changeTypeOfHome(e.target.value))}
+                    />
                     Duplex
                   </label>
                 </div>
                 <div className="form-check">
-                  <input
-                    id="penthouse"
-                    type="checkbox"
-                    name="penthouse"
-                    value="penthouse"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      dispatch(changeTypeOfHome(e.target.value));
-                    }}
-                  />
-                  <label htmlFor="penthouse" className="pl-1">
+                  <label htmlFor="penthouse" className="inline-flex items-center indent-1">
+                    {" "}
+                    <input
+                      id="penthouse"
+                      type="checkbox"
+                      name="penthouse"
+                      value="penthouse"
+                      className="accent-green-500 h-5 w-5"
+                      checked={state.type_of_home.includes("penthouse")}
+                      onChange={(e) => dispatch(changeTypeOfHome(e.target.value))}
+                    />
                     Penthouse
                   </label>
                 </div>
@@ -91,50 +84,49 @@ const Filters = () => {
             <div className="flex flex-row">
               <div className="flex flex-col w-2/4">
                 <div className="form-check">
-                  <input
-                    id="new_homes"
-                    type="checkbox"
-                    name="new_homes"
-                    className="form-check-input"
-                    value="new_homes"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      dispatch(changeCondition(e.target.value));
-                    }}
-                  />
-                  <label htmlFor="new_homes" className="pl-1">
+                  <label htmlFor="new_homes" className="inline-flex items-center indent-1">
+                    {" "}
+                    <input
+                      id="new_homes"
+                      type="checkbox"
+                      name="new_homes"
+                      className="accent-green-500 h-5 w-5"
+                      value="new_homes"
+                      checked={state.condition.includes("new_homes")}
+                      onChange={(e) => dispatch(changeCondition(e.target.value))}
+                    />
                     New homes
                   </label>
                 </div>
                 <div className="form-check">
-                  <input
-                    id="renovation"
-                    type="checkbox"
-                    name="renovation"
-                    value="renovation"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      dispatch(changeCondition(e.target.value));
-                    }}
-                  />
-                  <label htmlFor="renovation" className="p-1">
+                  <label htmlFor="renovation" className="inline-flex items-center indent-1">
+                    {" "}
+                    <input
+                      id="renovation"
+                      type="checkbox"
+                      name="renovation"
+                      value="renovation"
+                      className="accent-green-500 h-5 w-5"
+                      checked={state.condition.includes("renovation")}
+                      onChange={(e) => dispatch(changeCondition(e.target.value))}
+                    />
                     Needs renovation
                   </label>
                 </div>
               </div>
               <div className="w-2/4">
                 <div className="form-check">
-                  <input
-                    id="good_condition"
-                    type="checkbox"
-                    value="good_condition"
-                    name="good_condition"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      dispatch(changeCondition(e.target.value));
-                    }}
-                  />
-                  <label htmlFor="good_condition" className="pl-1">
+                  <label htmlFor="good_condition" className="inline-flex items-center indent-1">
+                    {" "}
+                    <input
+                      id="good_condition"
+                      type="checkbox"
+                      value="good_condition"
+                      name="good_condition"
+                      className="accent-green-500 h-5 w-5"
+                      checked={state.condition.includes("good_condition")}
+                      onChange={(e) => dispatch(changeCondition(e.target.value))}
+                    />
                     Good condition
                   </label>
                 </div>
@@ -148,74 +140,39 @@ const Filters = () => {
           <h1 className="block font-bold ">Bedrooms</h1>
           <div className="flex justify-between">
             <div className="form-check">
-              <input
-                id="bed-0"
-                type="checkbox"
-                name="room"
-                value="0"
-                onClick={(e) => {
-                  e.preventDefault();
-                  dispatch(changeBedrooms(e.target.value));
-                }}
-              />
-              <label htmlFor="bed-0" className="p-1">
+              <label htmlFor="bed-0" className="inline-flex items-center indent-1">
+                <input
+                  id="bed-0"
+                  className="accent-green-500 h-5 w-5"
+                  type="checkbox"
+                  name="room"
+                  value="0"
+                  checked={state.bedrooms.includes(0)}
+                  onChange={(e) => dispatch(changeBedrooms(e.target.value))}
+                />
                 0 (Studio flat)
               </label>
             </div>
             <div className="form-check">
-              <input
-                id="bed-1"
-                type="checkbox"
-                value="1"
-                onClick={(e) => {
-                  e.preventDefault();
-                  dispatch(changeBedrooms(e.target.value));
-                }}
-              />
-              <label htmlFor="bed-1" className="p-1">
-                1
+              <label htmlFor="bed-1" className="inline-flex items-center indent-1">
+                {" "}
+                <input id="bed-1" type="checkbox" className="accent-green-500 h-5 w-5" value="1" checked={state.bedrooms.includes(1)} onChange={(e) => dispatch(changeBedrooms(e.target.value))} />1
               </label>
             </div>
             <div className="form-check">
-              <input
-                id="bed-2"
-                type="checkbox"
-                value="2"
-                onClick={(e) => {
-                  e.preventDefault();
-                  dispatch(changeBedrooms(e.target.value));
-                }}
-              />
-              <label htmlFor="bed-2" className="p-1">
-                2
+              <label htmlFor="bed-2" className="inline-flex items-center indent-1">
+                <input id="bed-2" type="checkbox" className="accent-green-500 h-5 w-5" value="2" checked={state.bedrooms.includes(2)} onChange={(e) => dispatch(changeBedrooms(e.target.value))} />2
               </label>
             </div>
             <div className="form-check">
-              <input
-                id="bed-3"
-                type="checkbox"
-                value="3"
-                onClick={(e) => {
-                  e.preventDefault();
-                  dispatch(changeBedrooms(e.target.value));
-                }}
-              />
-              <label htmlFor="bed-3" className="p-1">
-                3
+              <label htmlFor="bed-3" className="inline-flex items-center indent-1">
+                <input id="bed-3" type="checkbox" value="3" className="accent-green-500 h-5 w-5" checked={state.bedrooms.includes(3)} onChange={(e) => dispatch(changeBedrooms(e.target.value))} />3
               </label>
             </div>
             <div className="form-check">
-              <input
-                id="bed-4"
-                type="checkbox"
-                value="4+"
-                onClick={(e) => {
-                  e.preventDefault();
-                  dispatch(changeBedrooms(e.target.value));
-                }}
-              />
-              <label htmlFor="bed-4" className="p-1">
-                4 or +
+              <label htmlFor="bed-4" className="inline-flex items-center indent-1">
+                <input id="bed-4" type="checkbox" className="accent-green-500 h-5 w-5" value="4" checked={state.bedrooms.includes(4)} onChange={(e) => dispatch(changeBedrooms(e.target.value))} />4 or
+                +
               </label>
             </div>
           </div>
@@ -224,9 +181,27 @@ const Filters = () => {
           <h1 className="block font-bold py-3">Price Range</h1>
           <div className="flex">
             <div className="flex">
-              <input type="number" className="font-bold border rounded block w-2/4" name="min_price" onChange="" />
+              <input
+                type="number"
+                value={min_price}
+                className="font-bold border rounded block w-2/4"
+                name="min_price"
+                onChange={(e) => {
+                  setMinPrice(e.target.value);
+                  dispatch(changeRangePrice({ min: e.target.value }));
+                }}
+              />
               <span className="font-bold block px-2"> - </span>
-              <input type="number" className="font-bold border rounded block w-2/4" name="max_price" onChange="" />
+              <input
+                type="number"
+                value={max_price}
+                className="font-bold border rounded block w-2/4"
+                name="max_price"
+                onChange={(e) => {
+                  setMaxPrice(e.target.value);
+                  dispatch(changeRangePrice({ max: e.target.value }));
+                }}
+              />
             </div>
           </div>
           <div className="flex py-3">
@@ -239,47 +214,44 @@ const Filters = () => {
           <h1 className="block font-bold ">Bathrooms</h1>
           <div className="flex justify-between">
             <div className="form-check">
-              <input
-                type="checkbox"
-                name="bath-1"
-                id="bath-1"
-                value="1"
-                onClick={(e) => {
-                  e.preventDefault();
-                  dispatch(changeBathrooms(e.target.value));
-                }}
-              />
-              <label htmlFor="bath-1" className="p-1">
+              <label htmlFor="bath-1" className="inline-flex items-center indent-1">
+                <input
+                  type="checkbox"
+                  className="accent-green-500 h-5 w-5"
+                  name="bath-1"
+                  id="bath-1"
+                  value="1"
+                  checked={state.bathrooms.includes(1)}
+                  onChange={(e) => dispatch(changeBathrooms(e.target.value))}
+                />
                 1
               </label>
             </div>
             <div className="form-check">
-              <input
-                type="checkbox"
-                name="bath-2"
-                id="bath-2"
-                value="2"
-                onClick={(e) => {
-                  e.preventDefault();
-                  dispatch(changeBathrooms(e.target.value));
-                }}
-              />
-              <label htmlFor="bath-2" className="p-1">
+              <label htmlFor="bath-2" className="inline-flex items-center indent-1">
+                <input
+                  type="checkbox"
+                  className="accent-green-500 h-5 w-5"
+                  name="bath-2"
+                  id="bath-2"
+                  value="2"
+                  checked={state.bathrooms.includes(2)}
+                  onChange={(e) => dispatch(changeBathrooms(e.target.value))}
+                />
                 2
               </label>
             </div>
             <div className="form-check">
-              <input
-                type="checkbox"
-                name="bath-3"
-                id="bath-3"
-                value="3+"
-                onClick={(e) => {
-                  e.preventDefault();
-                  dispatch(changeBathrooms(e.target.value));
-                }}
-              />
-              <label htmlFor="bath-3" className="p-1">
+              <label htmlFor="bath-3" className="inline-flex items-center indent-1">
+                <input
+                  type="checkbox"
+                  className="accent-green-500 h-5 w-5"
+                  name="bath-3"
+                  id="bath-3"
+                  value="3"
+                  checked={state.bathrooms.includes(3)}
+                  onChange={(e) => dispatch(changeBathrooms(e.target.value))}
+                />
                 3 or +
               </label>
             </div>
@@ -288,14 +260,7 @@ const Filters = () => {
         <div className="py-3">
           <h1 className="block font-bold py-3">Publication date</h1>
           <div className="flex">
-            <select
-              name="publication_date"
-              className="border w-full py-2 rounded"
-              onChange={(e) => {
-                e.preventDefault();
-                dispatch(changePublicationDate(e.target.value));
-              }}
-            >
+            <select name="publication_date" className="border w-full py-2 rounded" onChange={(e) => dispatch(changePublicationDate(e.target.value))}>
               <option value="48">Last 48 Hours</option>
               <option value="24">Last 24 Hours</option>
             </select>
@@ -304,16 +269,9 @@ const Filters = () => {
       </div>
       <div className="w-1/4 px-5">
         <div className="py-3">
-          <h1 className="block font-bold ">Equipament</h1>
+          <h1 className="block font-bold pb-3">Equipament</h1>
           <div className="flex">
-            <select
-              name="equipament"
-              className="border w-full py-2 rounded"
-              onChange={(e) => {
-                e.preventDefault();
-                dispatch(changeEquipament(e.target.value));
-              }}
-            >
+            <select name="equipament" className="border w-full py-2 rounded" onChange={(e) => dispatch(changeEquipament(e.target.value))}>
               <option value="indiferent">Indiferent</option>
               <option value="full">Full</option>
             </select>
@@ -324,96 +282,91 @@ const Filters = () => {
           <div className="flex flex-col">
             <div className="flex">
               <div className="form-check w-2/4">
-                <input
-                  id="pets_allow"
-                  type="checkbox"
-                  name="pets_allow"
-                  value="pets_allow"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    dispatch(changeMoreFilters(e.target.value));
-                  }}
-                />
-                <label htmlFor="pets_allow" className="pl-1">
+                <label htmlFor="pets_allow" className="inline-flex items-center indent-1">
+                  <input
+                    id="pets_allow"
+                    type="checkbox"
+                    name="pets_allow"
+                    value="pets_allow"
+                    className="accent-green-500 h-5 w-5"
+                    checked={state.more_filters.includes("pets_allow")}
+                    onChange={(e) => dispatch(changeMoreFilters(e.target.value))}
+                  />
                   Pets allow
                 </label>
               </div>
               <div className="form-check w-2/4">
-                <input
-                  id="lift"
-                  type="checkbox"
-                  name="lift"
-                  value="lift"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    dispatch(changeMoreFilters(e.target.value));
-                  }}
-                />
-                <label htmlFor="lift" className="p-1">
+                <label htmlFor="lift" className="inline-flex items-center indent-1">
+                  <input
+                    id="lift"
+                    type="checkbox"
+                    className="accent-green-500 h-5 w-5"
+                    name="lift"
+                    value="lift"
+                    checked={state.more_filters.includes("lift")}
+                    onChange={(e) => dispatch(changeMoreFilters(e.target.value))}
+                  />
                   Lift
                 </label>
               </div>
             </div>
             <div className="flex">
               <div className="form-check w-2/4">
-                <input
-                  id="garden"
-                  type="checkbox"
-                  name="garden"
-                  value="garden"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    dispatch(changeMoreFilters(e.target.value));
-                  }}
-                />
-                <label htmlFor="garden" className="pl-1">
+                <label htmlFor="garden" className="inline-flex items-center indent-1">
+                  <input
+                    id="garden"
+                    className="accent-green-500 h-5 w-5"
+                    type="checkbox"
+                    name="garden"
+                    value="garden"
+                    checked={state.more_filters.includes("garden")}
+                    onChange={(e) => dispatch(changeMoreFilters(e.target.value))}
+                  />
                   Garden
                 </label>
               </div>
               <div className="form-check w-2/4">
-                <input
-                  id="air_conditioning"
-                  type="checkbox"
-                  name="air_conditioning"
-                  value="air_conditioning"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    dispatch(changeMoreFilters(e.target.value));
-                  }}
-                />
-                <label htmlFor="air_conditioning" className="pl-1">
+                <label htmlFor="air_conditioning" className="inline-flex items-center indent-1">
+                  <input
+                    id="air_conditioning"
+                    type="checkbox"
+                    name="air_conditioning"
+                    value="air_conditioning"
+                    className="accent-green-500 h-5 w-5"
+                    checked={state.more_filters.includes("air_conditioning")}
+                    onChange={(e) => dispatch(changeMoreFilters(e.target.value))}
+                  />
                   Air conditioning
                 </label>
               </div>
             </div>
             <div className="flex">
               <div className="form-check w-2/4">
-                <input
-                  id="swimming_pool"
-                  type="checkbox"
-                  name="swimming_pool"
-                  value="swimming_pool"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    dispatch(changeMoreFilters(e.target.value));
-                  }}
-                />
-                <label htmlFor="swimming_pool" className="pl-1">
+                <label htmlFor="swimming_pool" className="inline-flex items-center indent-1">
+                  {" "}
+                  <input
+                    id="swimming_pool"
+                    type="checkbox"
+                    name="swimming_pool"
+                    value="swimming_pool"
+                    className="accent-green-500 h-5 w-5"
+                    checked={state.more_filters.includes("swimming_pool")}
+                    onChange={(e) => dispatch(changeMoreFilters(e.target.value))}
+                  />
                   Swimming pool
                 </label>
               </div>
               <div className="form-check w-2/4">
-                <input
-                  id="terrace"
-                  type="checkbox"
-                  name="terrace"
-                  value="terrace"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    dispatch(changeMoreFilters(e.target.value));
-                  }}
-                />
-                <label htmlFor="terrace" className="pl-1">
+                <label htmlFor="terrace" className="inline-flex items-center indent-1">
+                  <input
+                    id="terrace"
+                    className="accent-green-500 h-5 w-5"
+                    type="checkbox"
+                    name="terrace"
+                    value="terrace"
+                    checked={state.more_filters.includes("terrace")}
+                    onChange={(e) => dispatch(changeMoreFilters(e.target.value))}
+                  />
                   Terrace
                 </label>
               </div>

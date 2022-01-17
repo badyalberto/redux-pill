@@ -6,7 +6,7 @@ function withLayout(WrappedComponent) {
   function WrapperComponent({ ...props }) {
     return (
       <>
-        <div className="main-container">
+        <div className="main-container w-full 2xl:w-9/12">
           <Navbar />
           <main>
             <WrappedComponent />
