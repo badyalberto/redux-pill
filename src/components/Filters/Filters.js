@@ -1,12 +1,51 @@
-import { useState } from "react";
+import { stringify } from "query-string";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { changeTypeOfHome, changeCondition, changeBedrooms, changeRangePrice, changeBathrooms, changePublicationDate, changeEquipament, changeMoreFilters } from "../../redux/filters/actions";
+import { useLocation, useNavigate } from "react-router";
+import {
+  changeTypeOfHome,
+  changeCondition,
+  changeBedrooms,
+  changeRangePrice,
+  changeBathrooms,
+  changePublicationDate,
+  changeEquipament,
+  changeMoreFilters,
+  loadFilters,
+} from "../../redux/filters/actions";
 
 const Filters = () => {
   const state = useSelector((state) => state.filter);
   const dispatch = useDispatch();
   const [min_price, setMinPrice] = useState();
   const [max_price, setMaxPrice] = useState();
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const changeUrl = (key, value) => {
+    let url = new URL(`http://localhost:3000${location.pathname}${location.search}`);
+
+    if (!url.searchParams.get(key)) {
+      url.searchParams.append(key, value);
+      navigate(url.pathname + url.search, { replace: true });
+      return;
+    }
+
+    let found = false;
+    url.searchParams.getAll(key).forEach((element) => {
+      if (element === value) found = true;
+    });
+
+    if (!found) {
+      url.searchParams.append(key, value);
+      navigate(url.pathname + url.search, { replace: true });
+    }
+    console.log(stringify(state));
+  };
+
+  useEffect(() => {
+    dispatch(loadFilters(location.search));
+  }, [dispatch, location]);
 
   return (
     <div className="flex mt-10 shadow-xl pt-2 pb-10">
@@ -19,13 +58,16 @@ const Filters = () => {
                 <div className="form-check">
                   <label htmlFor="flat_apartament" className="inline-flex items-center indent-1">
                     <input
-                      id="flat_apartament"
+                      id="flat/apartament"
                       type="checkbox"
-                      checked={state.type_of_home.includes("flat/apartament")}
+                      checked={state.type.includes("flat/apartament")}
                       value="flat/apartament"
                       name="flat_apartament"
-                      className="accent-green-500 h-5 w-5"
-                      onChange={(e) => dispatch(changeTypeOfHome(e.target.value))}
+                      className="accent-green-600 h-5 w-5"
+                      onChange={(e) => {
+                        changeUrl("type", e.target.value);
+                        dispatch(changeTypeOfHome(e.target.value));
+                      }}
                     />
                     Flat/Apartament
                   </label>
@@ -34,12 +76,15 @@ const Filters = () => {
                   <label htmlFor="house" className="inline-flex items-center indent-1">
                     <input
                       id="house"
-                      className="accent-green-500 h-5 w-5 "
+                      className="accent-green-600 h-5 w-5 "
                       type="checkbox"
                       name="house"
                       value="house"
-                      checked={state.type_of_home.includes("house")}
-                      onChange={(e) => dispatch(changeTypeOfHome(e.target.value))}
+                      checked={state.type.includes("house")}
+                      onChange={(e) => {
+                        changeUrl("type", e.target.value);
+                        dispatch(changeTypeOfHome(e.target.value, "type"));
+                      }}
                     />
                     House
                   </label>
@@ -52,11 +97,14 @@ const Filters = () => {
                     <input
                       id="duplex"
                       type="checkbox"
-                      className="accent-green-500 h-5 w-5"
+                      className="accent-green-600 h-5 w-5"
                       name="duplex"
                       value="duplex"
-                      checked={state.type_of_home.includes("duplex")}
-                      onChange={(e) => dispatch(changeTypeOfHome(e.target.value))}
+                      checked={state.type.includes("duplex")}
+                      onChange={(e) => {
+                        changeUrl("type", e.target.value);
+                        dispatch(changeTypeOfHome(e.target.value, "type"));
+                      }}
                     />
                     Duplex
                   </label>
@@ -69,9 +117,12 @@ const Filters = () => {
                       type="checkbox"
                       name="penthouse"
                       value="penthouse"
-                      className="accent-green-500 h-5 w-5"
-                      checked={state.type_of_home.includes("penthouse")}
-                      onChange={(e) => dispatch(changeTypeOfHome(e.target.value))}
+                      className="accent-green-600 h-5 w-5"
+                      checked={state.type.includes("penthouse")}
+                      onChange={(e) => {
+                        changeUrl("type", e.target.value);
+                        dispatch(changeTypeOfHome(e.target.value, "type"));
+                      }}
                     />
                     Penthouse
                   </label>
@@ -90,10 +141,13 @@ const Filters = () => {
                       id="new_homes"
                       type="checkbox"
                       name="new_homes"
-                      className="accent-green-500 h-5 w-5"
+                      className="accent-green-600 h-5 w-5"
                       value="new_homes"
                       checked={state.condition.includes("new_homes")}
-                      onChange={(e) => dispatch(changeCondition(e.target.value))}
+                      onChange={(e) => {
+                        changeUrl("condition", e.target.value);
+                        dispatch(changeCondition(e.target.value));
+                      }}
                     />
                     New homes
                   </label>
@@ -106,9 +160,12 @@ const Filters = () => {
                       type="checkbox"
                       name="renovation"
                       value="renovation"
-                      className="accent-green-500 h-5 w-5"
+                      className="accent-green-600 h-5 w-5"
                       checked={state.condition.includes("renovation")}
-                      onChange={(e) => dispatch(changeCondition(e.target.value))}
+                      onChange={(e) => {
+                        changeUrl("condition", e.target.value);
+                        dispatch(changeCondition(e.target.value));
+                      }}
                     />
                     Needs renovation
                   </label>
@@ -123,9 +180,12 @@ const Filters = () => {
                       type="checkbox"
                       value="good_condition"
                       name="good_condition"
-                      className="accent-green-500 h-5 w-5"
+                      className="accent-green-600 h-5 w-5"
                       checked={state.condition.includes("good_condition")}
-                      onChange={(e) => dispatch(changeCondition(e.target.value))}
+                      onChange={(e) => {
+                        changeUrl("condition", e.target.value);
+                        dispatch(changeCondition(e.target.value));
+                      }}
                     />
                     Good condition
                   </label>
@@ -143,12 +203,15 @@ const Filters = () => {
               <label htmlFor="bed-0" className="inline-flex items-center indent-1">
                 <input
                   id="bed-0"
-                  className="accent-green-500 h-5 w-5"
+                  className="accent-green-600 h-5 w-5"
                   type="checkbox"
                   name="room"
                   value="0"
-                  checked={state.bedrooms.includes(0)}
-                  onChange={(e) => dispatch(changeBedrooms(e.target.value))}
+                  checked={state.room.includes(0)}
+                  onChange={(e) => {
+                    changeUrl("room", e.target.value);
+                    dispatch(changeBedrooms(e.target.value));
+                  }}
                 />
                 0 (Studio flat)
               </label>
@@ -156,23 +219,66 @@ const Filters = () => {
             <div className="form-check">
               <label htmlFor="bed-1" className="inline-flex items-center indent-1">
                 {" "}
-                <input id="bed-1" type="checkbox" className="accent-green-500 h-5 w-5" value="1" checked={state.bedrooms.includes(1)} onChange={(e) => dispatch(changeBedrooms(e.target.value))} />1
+                <input
+                  id="bed-1"
+                  type="checkbox"
+                  className="accent-green-600 h-5 w-5"
+                  value="1"
+                  checked={state.room.includes(1)}
+                  onChange={(e) => {
+                    changeUrl("room", e.target.value);
+                    dispatch(changeBedrooms(e.target.value));
+                  }}
+                />
+                1
               </label>
             </div>
             <div className="form-check">
               <label htmlFor="bed-2" className="inline-flex items-center indent-1">
-                <input id="bed-2" type="checkbox" className="accent-green-500 h-5 w-5" value="2" checked={state.bedrooms.includes(2)} onChange={(e) => dispatch(changeBedrooms(e.target.value))} />2
+                <input
+                  id="bed-2"
+                  type="checkbox"
+                  className="accent-green-600 h-5 w-5"
+                  value="2"
+                  checked={state.room.includes(2)}
+                  onChange={(e) => {
+                    changeUrl("room", e.target.value);
+                    dispatch(changeBedrooms(e.target.value));
+                  }}
+                />
+                2
               </label>
             </div>
             <div className="form-check">
               <label htmlFor="bed-3" className="inline-flex items-center indent-1">
-                <input id="bed-3" type="checkbox" value="3" className="accent-green-500 h-5 w-5" checked={state.bedrooms.includes(3)} onChange={(e) => dispatch(changeBedrooms(e.target.value))} />3
+                <input
+                  id="bed-3"
+                  type="checkbox"
+                  value="3"
+                  className="accent-green-600 h-5 w-5"
+                  checked={state.room.includes(3)}
+                  onChange={(e) => {
+                    changeUrl("room", e.target.value);
+                    dispatch(changeBedrooms(e.target.value));
+                  }}
+                />
+                3
               </label>
             </div>
             <div className="form-check">
               <label htmlFor="bed-4" className="inline-flex items-center indent-1">
-                <input id="bed-4" type="checkbox" className="accent-green-500 h-5 w-5" value="4" checked={state.bedrooms.includes(4)} onChange={(e) => dispatch(changeBedrooms(e.target.value))} />4 or
-                +
+                <input
+                  id="bed-4"
+                  type="checkbox"
+                  className="accent-green-600 h-5 w-5"
+                  value="4"
+                  checked={state.room.includes(4)}
+                  onChange={(e) => {
+                    changeUrl("room", e.target.value);
+                    dispatch(changeBedrooms(e.target.value));
+                  }}
+                />
+                4 or +
               </label>
             </div>
           </div>
@@ -205,7 +311,7 @@ const Filters = () => {
             </div>
           </div>
           <div className="flex py-3">
-            <input className="block w-full" type="range" onChange="" />
+            <input className="block w-full bg-green-600" type="range" />
           </div>
         </div>
       </div>
@@ -217,12 +323,15 @@ const Filters = () => {
               <label htmlFor="bath-1" className="inline-flex items-center indent-1">
                 <input
                   type="checkbox"
-                  className="accent-green-500 h-5 w-5"
+                  className="accent-green-600 h-5 w-5"
                   name="bath-1"
                   id="bath-1"
                   value="1"
-                  checked={state.bathrooms.includes(1)}
-                  onChange={(e) => dispatch(changeBathrooms(e.target.value))}
+                  checked={state.bath.includes(1)}
+                  onChange={(e) => {
+                    changeUrl("bath", e.target.value);
+                    dispatch(changeBathrooms(e.target.value));
+                  }}
                 />
                 1
               </label>
@@ -231,12 +340,15 @@ const Filters = () => {
               <label htmlFor="bath-2" className="inline-flex items-center indent-1">
                 <input
                   type="checkbox"
-                  className="accent-green-500 h-5 w-5"
+                  className="accent-green-600 h-5 w-5"
                   name="bath-2"
                   id="bath-2"
                   value="2"
-                  checked={state.bathrooms.includes(2)}
-                  onChange={(e) => dispatch(changeBathrooms(e.target.value))}
+                  checked={state.bath.includes(2)}
+                  onChange={(e) => {
+                    changeUrl("bath", e.target.value);
+                    dispatch(changeBathrooms(e.target.value));
+                  }}
                 />
                 2
               </label>
@@ -245,12 +357,15 @@ const Filters = () => {
               <label htmlFor="bath-3" className="inline-flex items-center indent-1">
                 <input
                   type="checkbox"
-                  className="accent-green-500 h-5 w-5"
+                  className="accent-green-600 h-5 w-5"
                   name="bath-3"
                   id="bath-3"
                   value="3"
-                  checked={state.bathrooms.includes(3)}
-                  onChange={(e) => dispatch(changeBathrooms(e.target.value))}
+                  checked={state.bath.includes(3)}
+                  onChange={(e) => {
+                    changeUrl("bath", e.target.value);
+                    dispatch(changeBathrooms(e.target.value));
+                  }}
                 />
                 3 or +
               </label>
@@ -288,7 +403,7 @@ const Filters = () => {
                     type="checkbox"
                     name="pets_allow"
                     value="pets_allow"
-                    className="accent-green-500 h-5 w-5"
+                    className="accent-green-600 h-5 w-5"
                     checked={state.more_filters.includes("pets_allow")}
                     onChange={(e) => dispatch(changeMoreFilters(e.target.value))}
                   />
@@ -300,7 +415,7 @@ const Filters = () => {
                   <input
                     id="lift"
                     type="checkbox"
-                    className="accent-green-500 h-5 w-5"
+                    className="accent-green-600 h-5 w-5"
                     name="lift"
                     value="lift"
                     checked={state.more_filters.includes("lift")}
@@ -315,7 +430,7 @@ const Filters = () => {
                 <label htmlFor="garden" className="inline-flex items-center indent-1">
                   <input
                     id="garden"
-                    className="accent-green-500 h-5 w-5"
+                    className="accent-green-600 h-5 w-5"
                     type="checkbox"
                     name="garden"
                     value="garden"
@@ -332,7 +447,7 @@ const Filters = () => {
                     type="checkbox"
                     name="air_conditioning"
                     value="air_conditioning"
-                    className="accent-green-500 h-5 w-5"
+                    className="accent-green-600 h-5 w-5"
                     checked={state.more_filters.includes("air_conditioning")}
                     onChange={(e) => dispatch(changeMoreFilters(e.target.value))}
                   />
@@ -349,7 +464,7 @@ const Filters = () => {
                     type="checkbox"
                     name="swimming_pool"
                     value="swimming_pool"
-                    className="accent-green-500 h-5 w-5"
+                    className="accent-green-600 h-5 w-5"
                     checked={state.more_filters.includes("swimming_pool")}
                     onChange={(e) => dispatch(changeMoreFilters(e.target.value))}
                   />
@@ -360,7 +475,7 @@ const Filters = () => {
                 <label htmlFor="terrace" className="inline-flex items-center indent-1">
                   <input
                     id="terrace"
-                    className="accent-green-500 h-5 w-5"
+                    className="accent-green-600 h-5 w-5"
                     type="checkbox"
                     name="terrace"
                     value="terrace"

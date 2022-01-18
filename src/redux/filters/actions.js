@@ -1,4 +1,4 @@
-import { TYPE_OF_HOME, CONDITION, BEDROOMS, PRICE_RANGE, BATHROOMS, PUBLICATION_DATE, EQUIPAMENT, MORE_FILTERS } from "./types";
+import { TYPE_OF_HOME, CONDITION, BEDROOMS, PRICE_RANGE, BATHROOMS, PUBLICATION_DATE, EQUIPAMENT, MORE_FILTERS,LOAD_FILTERS } from "./types";
 
 export const changeTypeOfHome = (value) => ({
   type: TYPE_OF_HOME,
@@ -32,3 +32,9 @@ export const changeMoreFilters = (value) => ({
   type: MORE_FILTERS,
   payload: value,
 });
+
+export const loadFilters = (value) => ({
+  type: LOAD_FILTERS,
+  payload: value,
+});
+

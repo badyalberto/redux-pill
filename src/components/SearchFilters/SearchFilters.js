@@ -1,12 +1,14 @@
+import { useState } from "react";
 import { HiSearch } from "react-icons/hi";
 
 const SearchFilters = () => {
+  const [search, setSearch] = useState("");
   return (
     <>
       <div className="flex justify-between">
         <form method="POST" action="" className="w-2/4">
           <div className="flex content-center">
-            <input className="bg-gray-300 p-1 pl-3 w-3/4" type="text" placeholder="Search"></input>
+            <input className="bg-gray-300 p-1 pl-3 w-3/4" type="text" placeholder="Search" value={search} onChange={({ target }) => setSearch(target.value)}></input>
             <button className="border bg-orange-400 text-white font-bold">
               <HiSearch className="w-7 h-7 border-0" />
             </button>

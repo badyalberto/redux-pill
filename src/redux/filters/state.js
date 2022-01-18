@@ -1,12 +1,12 @@
 const initialState = {
-  type_of_home: [],
+  type: [],
   condition: [],
-  bedrooms: [],
+  room: [],
   price_range: {
     min: 0,
     max: 9999999,
   },
-  bathrooms: [],
+  bath: [],
   publication_date: "",
   equipament: "",
   more_filters: [],

@@ -1,22 +1,25 @@
+import { parse } from "query-string";
 import initialState from "./state";
-import { TYPE_OF_HOME, CONDITION, BEDROOMS, PRICE_RANGE, BATHROOMS, PUBLICATION_DATE, EQUIPAMENT, MORE_FILTERS } from "./types";
+import { TYPE_OF_HOME, CONDITION, BEDROOMS, PRICE_RANGE, BATHROOMS, PUBLICATION_DATE, EQUIPAMENT, MORE_FILTERS, LOAD_FILTERS } from "./types";
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case TYPE_OF_HOME:
       if (action.payload) {
-        let found = state.type_of_home.find((item) => item === action.payload);
+        changeToArray(state);
+        let found = state.type.find((item) => item === action.payload);
 
         if (found) {
-          let updatedArray = state.type_of_home.filter((item) => item !== found);
-          return { ...state, type_of_home: [...updatedArray] };
+          let updatedArray = state.type.filter((item) => item !== found);
+          return { ...state, type: [...updatedArray] };
         } else {
-          return { ...state, type_of_home: [...state.type_of_home, action.payload] };
+          return { ...state, type: [...state.type, action.payload] };
         }
       }
       return state;
     case CONDITION:
       if (action.payload) {
+        changeToArray(state);
         let found = state.condition.find((item) => item === action.payload);
 
         if (found) {
@@ -29,13 +32,14 @@ const reducer = (state = initialState, action) => {
       return state;
     case BEDROOMS:
       if (action.payload) {
-        let found = state.bedrooms.find((item) => item === Number(action.payload));
+        changeToArray(state);
+        let found = state.room.find((item) => item === Number(action.payload));
 
         if (found) {
-          let updatedArray = state.bedrooms.filter((item) => item !== found);
-          return { ...state, bedrooms: [...updatedArray] };
+          let updatedArray = state.room.filter((item) => item !== found);
+          return { ...state, room: [...updatedArray] };
         } else {
-          return { ...state, bedrooms: [...state.bedrooms, Number(action.payload)] };
+          return { ...state, room: [...state.room, Number(action.payload)] };
         }
       }
       return state;
@@ -47,13 +51,14 @@ const reducer = (state = initialState, action) => {
       }
     case BATHROOMS:
       if (action.payload) {
-        let found = state.bathrooms.find((item) => item === Number(action.payload));
+        changeToArray(state);
+        let found = state.bath.find((item) => item === Number(action.payload));
 
         if (found) {
-          let updatedArray = state.bathrooms.filter((item) => item !== found);
-          return { ...state, bathrooms: [...updatedArray] };
+          let updatedArray = state.bath.filter((item) => item !== found);
+          return { ...state, bath: [...updatedArray] };
         } else {
-          return { ...state, bathrooms: [...state.bathrooms, Number(action.payload)] };
+          return { ...state, bath: [...state.bath, Number(action.payload)] };
         }
       }
       return state;
@@ -63,6 +68,7 @@ const reducer = (state = initialState, action) => {
       return { ...state, equipament: action.payload };
     case MORE_FILTERS:
       if (action.payload) {
+        changeToArray(state);
         let found = state.more_filters.find((item) => item === action.payload);
 
         if (found) {
@@ -73,9 +79,19 @@ const reducer = (state = initialState, action) => {
         }
       }
       return state;
+    case LOAD_FILTERS:
+      return { ...state, ...parse(action.payload) };
     default:
       return state;
   }
+};
+
+
+function changeToArray(state){
+  if(!(state.type instanceof Array)){
+    state.type = [state.type];
+  } 
+  return state;
 }
 
 export default reducer;

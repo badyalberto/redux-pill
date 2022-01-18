@@ -1,8 +1,10 @@
 import { combineReducers } from "redux";
-import filterReducer from "./filters/reducer"
+import filterReducer from "./filters/reducer";
+import propertiesReducer from "./properties/reducer";
 
 const reducers = combineReducers({
-    filter: filterReducer
-})
+  filter: filterReducer,
+  properties: propertiesReducer
+});
 
-export default reducers
+export default reducers;
