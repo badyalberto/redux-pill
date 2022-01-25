@@ -86,11 +86,10 @@ const reducer = (state = initialState, action) => {
   }
 };
 
-
-function changeToArray(state){
-  if(!(state.type instanceof Array)){
+function changeToArray(state) {
+  if (!(state.type instanceof Array)) {
     state.type = [state.type];
-  } 
+  }
   return state;
 }
 

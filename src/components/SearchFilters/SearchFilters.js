@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { HiSearch } from "react-icons/hi";
+import { useSelector } from "react-redux";
 
 const SearchFilters = () => {
+  const state = useSelector((state) => state.properties);
   const [search, setSearch] = useState("");
   return (
     <>
@@ -21,7 +23,7 @@ const SearchFilters = () => {
               src="https://images.pexels.com/photos/2589653/pexels-photo-2589653.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
               alt="Profile"
             />
-            <span className="font-bold">Antonio</span>
+            <span className="font-bold">{state.user ? state.user : ""}</span>
           </div>
         </div>
       </div>

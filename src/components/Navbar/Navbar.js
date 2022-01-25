@@ -1,10 +1,11 @@
 import { FcHome } from "react-icons/fc";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
     <nav className="flex items-center justify-between flex-wrap bg-white py-6 text-black">
       <div className="flex items-center flex-shrink-0 text-black mr-6">
-        <FcHome className="w-10"/>
+        <FcHome className="w-10" />
         <span className="font-semibold text-xl tracking-tight text-black">Luxury Houses</span>
       </div>
       <div className="block lg:hidden">
@@ -31,12 +32,10 @@ const Navbar = () => {
           </a>
         </div>
         <div>
-          <a href="#hole" className="inline-block text-sm px-4 py-2 leading-none border rounded text-black border-black hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0 mr-4">
-            Sign in
-          </a>
-          <a href="#hola" className="inline-block text-sm px-4 py-2 leading-none border rounded text-black border-black hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0">
-            Sign Up
-          </a>
+          <Link to="/signin" className="inline-block text-sm px-4 py-2 leading-none border rounded text-black border-black hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0 mr-4">Sign In
+          </Link>
+          <Link to="/signup" className="inline-block text-sm px-4 py-2 leading-none border rounded text-black border-black hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0">Sign Up
+          </Link>
         </div>
       </div>
     </nav>

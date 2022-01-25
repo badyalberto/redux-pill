@@ -1,7 +1,8 @@
-import { stringify } from "query-string";
+
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router";
+
 import {
   changeTypeOfHome,
   changeCondition,
@@ -23,7 +24,9 @@ const Filters = () => {
   const navigate = useNavigate();
 
   const changeUrl = (key, value) => {
-    let url = new URL(`http://localhost:3000${location.pathname}${location.search}`);
+    const search = searchPath();
+    console.log(search);
+    let url = new URL(`http://localhost:3000${location.pathname}${search}`);
 
     if (!url.searchParams.get(key)) {
       url.searchParams.append(key, value);
@@ -40,8 +43,20 @@ const Filters = () => {
       url.searchParams.append(key, value);
       navigate(url.pathname + url.search, { replace: true });
     }
-    console.log(stringify(state));
   };
+
+  function searchPath(){
+    let string = "?";
+    for (const key in state) {
+      if (state[key] instanceof Array && state[key].length > 0) {
+        state[key].forEach(element => {
+          string += `${key}=${element}&`;
+        });
+        
+      }
+    }
+    return string;
+  }
 
   useEffect(() => {
     dispatch(loadFilters(location.search));
@@ -65,8 +80,9 @@ const Filters = () => {
                       name="flat_apartament"
                       className="accent-green-600 h-5 w-5"
                       onChange={(e) => {
-                        changeUrl("type", e.target.value);
                         dispatch(changeTypeOfHome(e.target.value));
+                        changeUrl("type", e.target.value);
+                        
                       }}
                     />
                     Flat/Apartament
@@ -82,8 +98,9 @@ const Filters = () => {
                       value="house"
                       checked={state.type.includes("house")}
                       onChange={(e) => {
-                        changeUrl("type", e.target.value);
                         dispatch(changeTypeOfHome(e.target.value, "type"));
+                        changeUrl("type", e.target.value);
+                        
                       }}
                     />
                     House
@@ -102,8 +119,9 @@ const Filters = () => {
                       value="duplex"
                       checked={state.type.includes("duplex")}
                       onChange={(e) => {
-                        changeUrl("type", e.target.value);
                         dispatch(changeTypeOfHome(e.target.value, "type"));
+                        changeUrl("type", e.target.value);
+                        
                       }}
                     />
                     Duplex
@@ -120,8 +138,9 @@ const Filters = () => {
                       className="accent-green-600 h-5 w-5"
                       checked={state.type.includes("penthouse")}
                       onChange={(e) => {
-                        changeUrl("type", e.target.value);
                         dispatch(changeTypeOfHome(e.target.value, "type"));
+                        changeUrl("type", e.target.value);
+                        
                       }}
                     />
                     Penthouse

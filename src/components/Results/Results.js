@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchProperties } from "../../redux/properties/actions";
 import { useLocation } from "react-router";
 
-
 const Results = () => {
   const dispatch = useDispatch();
   const state = useSelector((state) => state.filter);
@@ -21,12 +20,17 @@ const Results = () => {
       let result = url.filter((item, index) => {
         return url.indexOf(item) === index;
       });
-  
+
       return result.toString().replace(",", "&");
     };
+
     const filters = searchDuplicateFilter();
+    //console.log(state);
+    
+    //console.log(string);
     dispatch(fetchProperties(state, filters));
-  }, [dispatch,state]);
+    //window.location.href = `http://localhost:3000/filters${string}`
+  }, [dispatch, state]);
 
   return (
     <div className="shadow-lg mt-10 p-5">
@@ -103,7 +107,9 @@ const Results = () => {
             </div>
           </div>
         ))
-      ) : <span>Not Found</span>}
+      ) : (
+        <span>Not Found</span>
+      )}
     </div>
   );
 };
